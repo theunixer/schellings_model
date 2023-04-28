@@ -20,11 +20,15 @@ impl Field {
     fn new(x: usize, y: usize) -> Self {
         let mut f: Vec<Vec<Option<Agent>>> = Vec::new();
 
-        /*
-        TODO: Implement reserve here
-        f.reserve(x);
-        f[0].reserve(y);
-        */
+        for xx in 0..x {
+            let mut temp_vec: Vec<Option<Agent>> = Vec::new();
+
+            for yy in 0..y {
+                temp_vec.push(None);
+            }
+
+            f.push(temp_vec);
+        }
         Field { field: f }
     }
 
