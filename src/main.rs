@@ -2,11 +2,13 @@ use rand::prelude::RngCore;
 use rand::thread_rng;
 use std::mem::transmute;
 
+#[derive(PartialEq, Clone, Copy)]
 enum Colour {
     Yellow,
     Green,
 }
 
+#[derive(PartialEq, Clone, Copy)]
 struct Agent {
     colour: Colour,
     happiness: f32,
@@ -47,6 +49,31 @@ impl Field {
                         colour: unsafe { transmute(rng.next_u32() as u8 % 2) },
                         happiness: 0.0,
                     });
+                }
+            }
+        }
+    }
+
+    fn calculate_happiness(&mut self) {
+        let max_x = self.field.len();
+        let max_y = self.field[0].len();
+        for x in 0..max_x {
+            for y in 0..max_y {
+                let mut yellow = 0;
+                let mut green = 0;
+                for xx in -1..1 {
+                    for yy in -1..1 {
+                        let x_index = x + xx as usize % max_x;
+                        let y_index = y + yy as usize % max_y;
+                        if self.field[x_index][y_index] == None {
+                            continue;
+                        }
+                        if self.field[x_index][y_index].unwrap().colour == Colour::Yellow {
+                            yellow += 1;
+                        } else {
+                            green += 1;
+                        }
+                    }
                 }
             }
         }
