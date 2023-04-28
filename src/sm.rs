@@ -74,8 +74,8 @@ pub mod sm {
 
                 for xx in -1..1 {
                     for yy in -1..1 {
-                        let x_index = x + xx as usize % max_x;
-                        let y_index = y + yy as usize % max_y;
+                        let x_index = ((x as i32 + xx) as usize) % max_x;
+                        let y_index = ((y as i32 + yy) as usize) % max_y;
 
                         if field.field[x_index][y_index] == None {
                             continue;
@@ -88,7 +88,9 @@ pub mod sm {
                     }
                 }
 
-                if field.field[x][y].unwrap().colour == Colour::Yellow {
+                if field.field[x][y] == None {
+                    None
+                } else if field.field[x][y].unwrap().colour == Colour::Yellow {
                     Some(Agent {
                         colour: Colour::Yellow,
                         happiness: yellow as f32 / (yellow + green) as f32,
