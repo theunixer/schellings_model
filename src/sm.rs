@@ -22,9 +22,9 @@ pub mod sm {
         pub fn new(x: usize, y: usize) -> Self {
             let mut f: Vec<Vec<Option<Agent>>> = Vec::new();
 
-            for xx in 0..x {
+            for _ in 0..x {
                 let mut temp_vec: Vec<Option<Agent>> = Vec::new();
-                for yy in 0..y {
+                for _ in 0..y {
                     temp_vec.push(None);
                 }
                 f.push(temp_vec);
