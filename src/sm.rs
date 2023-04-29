@@ -115,7 +115,15 @@ pub mod sm {
 
             let mut rng = thread_rng();
 
+            let max_tries = max_x * max_y / 2;
+            let mut tries = 0;
+
             loop {
+                if tries > max_tries {
+                    return;
+                }
+                tries += 1;
+
                 agent = (
                     rng.next_u32() as usize % max_x,
                     rng.next_u32() as usize % max_y,
@@ -129,7 +137,14 @@ pub mod sm {
                 break;
             }
 
+            tries = 0;
+
             loop {
+                if tries > max_tries {
+                    return;
+                }
+                tries += 1;
+
                 empty = (
                     rng.next_u32() as usize % max_x,
                     rng.next_u32() as usize % max_y,

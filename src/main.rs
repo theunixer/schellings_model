@@ -67,8 +67,9 @@ fn main() {
         field.calculate_happiness();
         field.move_agent(wanted_happiness);
 
-        
-        if !draw_to_screen { continue; }
+        if !draw_to_screen {
+            continue;
+        }
         //cleaning screen
         canvas.set_draw_color(Color::RGB(0, 0, 0));
         canvas.clear();
@@ -104,9 +105,9 @@ fn main() {
         for i in 0..(1000 - speed) / 100 {
             canvas.draw_point(Point::new(i as i32 + 101, 2));
         }
-        
+
         canvas.present();
-        
+
         //sleeping
         sleep(Duration::from_millis(1));
         sleep(Duration::from_millis(speed));
