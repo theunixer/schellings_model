@@ -8,18 +8,20 @@
 
 ### Key bindings
 
-- A - make slower.
-- S - make faster.
-- D - disable/enable rendering.
+- A - Make slower.
+- S - Make faster.
+- D - Disable/enable rendering.
+- Z - Decrease number of neighbours alike for agent to be satisfied.
+- X - Increase number of neighbours alike for agent to be satisfied.
 
 ### Todo
 
 *Fix critical issues first, please.*
 
 
-- [x] Field: implement function that calculates level of happiness for all Agents.
-- [x] Implement moving of agents.
+- [x] Field: implement function that calculates level of happiness for all Aaents.
+- [x] Implement movement of agents.
 - [x] Implement graphics using SDL2.
 - [ ] Optimise program.
-- [ ] Add display modes: colour, happiness
-- [ ] Add statistics: avarage happiness.
+- [ ] Add display modes: colour, happiness.
+- [ ] Add statistics: average happiness.
