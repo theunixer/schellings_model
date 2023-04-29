@@ -105,5 +105,38 @@ pub mod sm {
                 }
             };
         }
+
+        pub fn move_agent(&mut self, wanted_happiness: f32)
+        {
+            let max_x = self.field.len();
+            let max_y = self.field[0].len();
+
+            let mut agent: (usize, usize);
+            let mut empty: (usize, usize);
+
+            let mut rng = thread_rng();
+
+            loop {
+                agent = (rng.next_u32() as usize % max_x , rng.next_u32() as usize % max_y);
+                if self.field[agent.0][agent.1] == None{
+                    continue;
+                }
+                if self.field[agent.0][agent.1].unwrap().happiness > wanted_happiness{
+                    continue;
+                }
+                break;
+            }
+
+            loop {
+                empty = (rng.next_u32() as usize % max_x , rng.next_u32() as usize % max_y);
+                if self.field[empty.0][empty.1] != None{
+                    continue;
+                }
+                break;
+            }
+            
+            self.field[empty.0][empty.1] = self.field[agent.0][agent.1].clone();
+            self.field[agent.0][agent.1] = None;
+        }
     }
 }
