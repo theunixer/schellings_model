@@ -100,10 +100,11 @@ fn main() {
                 canvas.draw_point(point);
             }
         }
-        //drawing statistics
+
+        // drawing speed
         canvas.set_draw_color(Color::RGB(255, 255, 255));
-        for i in 0..(1000 - speed) / 100 {
-            canvas.draw_point(Point::new(i as i32 + 101, 2));
+        for i in 0..(1100 - speed) / 100 {
+            canvas.draw_point(Point::new(i as i32 + 101, 1));
         }
 
         canvas.present();
