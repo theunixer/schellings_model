@@ -1,6 +1,16 @@
 ## Program is unstable.
 
-## Todo
+
+-----
+
+
+### Key bindings
+- A - make slower.
+- S - make faster.
+- D - disable/enable rendering.
+
+
+### Todo
  *Fix critical issues first, please.* 
  
 - [x] Field: implement function that calculates level of happiness for all Agents.
