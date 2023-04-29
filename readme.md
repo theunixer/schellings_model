@@ -1,6 +1,8 @@
 ## Schelling's model written in rust.
 
-[RU](https://notabug.org/GreatC0der/schellings_model/src/master/readmeRU.md)
+### [RU](https://notabug.org/GreatC0der/schellings_model/src/master/readmeRU.md)
+
+
 [Wikipedia article on Schelling's model.](https://en.wikipedia.org/wiki/Schelling%27s_model_of_segregation)
 
 *There are subtle differences to original Schelling's model.*
