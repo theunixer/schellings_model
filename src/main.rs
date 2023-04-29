@@ -13,7 +13,7 @@ fn main() {
     let video_subsystem = sdl_context.video().unwrap();
 
     let window = video_subsystem
-        .window("Schelling's model", 800, 600)
+        .window("Schelling's model", 1000, 600)
         .position_centered()
         .build()
         .unwrap();
@@ -24,24 +24,55 @@ fn main() {
 
     let mut field = Field::new(800 / 8, 600 / 8);
     field.fill(4);
+
+    let mut speed: u64 = 500;
+    let mut wanted_happiness: f32 = 0.50;
+    let mut draw_to_screen: bool = true;
+
     'running: loop {
-        //drawing
-        canvas.present();
         //checking events
         for event in event_pump.poll_iter() {
             match event {
                 Event::Quit { .. }
                 | Event::KeyDown {
-                    keycode: Some((Keycode::Escape)),
+                    keycode: Some(Keycode::Escape),
                     ..
                 } => break 'running,
+                Event::KeyDown {
+                    keycode: Some(Keycode::A),
+                    ..
+                } => {
+                    if speed < 1000 {
+                        speed = speed + 100;
+                    }
+                }
+                Event::KeyDown {
+                    keycode: Some(Keycode::S),
+                    ..
+                } => {
+                    if speed > 0 {
+                        speed -= 100;
+                    }
+                }
+                Event::KeyDown {
+                    keycode: Some(Keycode::D),
+                    ..
+                } => {
+                    draw_to_screen = !draw_to_screen;
+                }
                 _ => {}
             }
         }
         //updating
         field.calculate_happiness();
-        field.move_agent(0.70);
+        field.move_agent(wanted_happiness);
 
+        
+        if !draw_to_screen { continue; }
+        //cleaning screen
+        canvas.set_draw_color(Color::RGB(0, 0, 0));
+        canvas.clear();
+        //drawing field
         for x in 0..field.field.len() {
             for y in 0..field.field[0].len() {
                 match field.field[x][y] {
@@ -68,6 +99,16 @@ fn main() {
                 canvas.draw_point(point);
             }
         }
-        sleep(Duration::from_millis(500));
+        //drawing statistics
+        canvas.set_draw_color(Color::RGB(255, 255, 255));
+        for i in 0..(1000 - speed) / 100 {
+            canvas.draw_point(Point::new(i as i32 + 101, 2));
+        }
+        
+        canvas.present();
+        
+        //sleeping
+        sleep(Duration::from_millis(1));
+        sleep(Duration::from_millis(speed));
     }
 }
