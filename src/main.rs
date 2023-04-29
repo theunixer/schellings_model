@@ -60,6 +60,22 @@ fn main() {
                 } => {
                     draw_to_screen = !draw_to_screen;
                 }
+                Event::KeyDown {
+                    keycode: Some(Keycode::Z),
+                    ..
+                } => {
+                    if wanted_happiness > 0.10 {
+                        wanted_happiness -= 0.10;
+                    }
+                }
+                Event::KeyDown {
+                    keycode: Some(Keycode::X),
+                    ..
+                } => {
+                    if wanted_happiness < 1.0 {
+                        wanted_happiness += 0.10;
+                    }
+                }
                 _ => {}
             }
         }
@@ -105,6 +121,11 @@ fn main() {
         canvas.set_draw_color(Color::RGB(255, 255, 255));
         for i in 0..(1100 - speed) / 100 {
             canvas.draw_point(Point::new(i as i32 + 101, 1));
+        }
+        //drawing wanted_happiness
+        canvas.set_draw_color(Color::RGB(255, 255, 255));
+        for i in 0..(wanted_happiness * 10 as f32 + 1.0) as i32 {
+            canvas.draw_point(Point::new(i + 101, 4));
         }
 
         canvas.present();
