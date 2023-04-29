@@ -16,9 +16,10 @@
 
 *Fix critical issues first, please.*
 
-- [X] Field: implement function that calculates level of happiness for all Agents.
-- [X] Implement moving of agents.
-- [X] Implement graphics using SDL2.
+
+- [x] Field: implement function that calculates level of happiness for all Agents.
+- [x] Implement moving of agents.
+- [x] Implement graphics using SDL2.
 - [ ] Optimise program.
 - [ ] Add display modes: colour, happiness
 - [ ] Add statistics: avarage happiness.
