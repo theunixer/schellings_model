@@ -25,3 +25,6 @@
 - [ ] Optimise program.
 - [ ] Add display modes: colour, happiness.
 - [ ] Add statistics: average happiness.
+
+### Screenshots
+![image](https://notabug.org/GreatC0der/schellings_model/raw/master/screenshots/program.png)
