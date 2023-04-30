@@ -17,17 +17,14 @@
 - Z - Decrease number of neighbours alike for agent to be satisfied.
 - X - Increase number of neighbours alike for agent to be satisfied.
 
-### Todo
-
-*Fix critical issues first, please.*
-
-
-- [x] Field: implement function that calculates level of happiness for all agents.
-- [x] Implement movement of agents.
-- [x] Implement graphics using SDL2.
-- [ ] Optimise program.
-- [ ] Add display modes: colour, happiness.
-- [ ] Add statistics: average happiness.
-
+### Build and run
+*Prebuilt binaries for linux and mac os are available in [releases](https://notabug.org/GreatC0der/schellings_model/releases).*
+[You need to install rust first.](https://www.rust-lang.org/tools/install)
+```
+git clone https:\//notabug.org/GreatC0der/schellings_model.git
+cd schellings_model
+cargo run -r 
+```
+Open issue if you have any problems!
 ### Screenshots
 ![image](https://notabug.org/GreatC0der/schellings_model/raw/master/screenshots/program.png)
