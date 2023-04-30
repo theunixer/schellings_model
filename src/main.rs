@@ -1,10 +1,10 @@
 mod sm;
 use crate::sm::sm::{Agent, Colour, Field};
 use sdl2::event::Event;
+use sdl2::event::WindowEvent;
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
 use sdl2::rect::Point;
-use sdl2::video;
 use std::{thread::sleep, time::Duration};
 
 fn main() {
@@ -15,6 +15,7 @@ fn main() {
     let window = video_subsystem
         .window("Schelling's model", 1000, 600)
         .position_centered()
+        .resizable()
         .build()
         .unwrap();
 
@@ -22,7 +23,10 @@ fn main() {
     let mut event_pump = sdl_context.event_pump().unwrap();
     canvas.set_scale(8.0, 8.0);
 
-    let mut field = Field::new(800 / 8, 600 / 8);
+    let mut field = Field::new(
+        (canvas.window().size().0 / 8) as usize - 12,
+        canvas.window().size().1 as usize / 8,
+    );
     field.fill(4);
 
     let mut speed: u64 = 500;
@@ -38,6 +42,13 @@ fn main() {
                     keycode: Some(Keycode::Escape),
                     ..
                 } => break 'running,
+                Event::Window {
+                    win_event: WindowEvent::Resized(x, y),
+                    ..
+                } => {
+                    field = Field::new((x / 8) as usize - 12, y as usize / 8);
+                    field.fill(4);
+                }
                 Event::KeyDown {
                     keycode: Some(Keycode::A),
                     ..
@@ -125,14 +136,16 @@ fn main() {
         canvas.draw_points(yellow_points.as_slice());
 
         canvas.set_draw_color(Color::RGB(0, 0, 0));
+
+        let toolbar_beggining = field.field.len() + 1;
         // drawing speed
         for i in 0..(1100 - speed) / 100 {
-            canvas.draw_point(Point::new(i as i32 + 101, 1));
+            canvas.draw_point(Point::new(i as i32 + toolbar_beggining as i32, 1));
         }
 
         //drawing wanted_happiness
         for i in 0..(wanted_happiness * 10 as f32 + 1.0) as i32 {
-            canvas.draw_point(Point::new(i + 101, 4));
+            canvas.draw_point(Point::new(i + toolbar_beggining as i32, 4));
         }
 
         canvas.present();
