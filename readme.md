@@ -13,7 +13,7 @@
 
 - A - Make slower.
 - S - Make faster.
-- D - Disable/enable rendering.
+- D - Disable/enable rendering. When enabled, works as fast as possible.
 - Z - Decrease number of neighbours alike for agent to be satisfied.
 - X - Increase number of neighbours alike for agent to be satisfied.
 
