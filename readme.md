@@ -16,6 +16,7 @@
 - D - Disable/enable rendering. When enabled, works as fast as possible.
 - Z - Decrease number of neighbours alike for agent to be satisfied.
 - X - Increase number of neighbours alike for agent to be satisfied.
+- W - Switch theme( light / dark ).
 
 ### Build and run
 *Prebuilt binaries for linux and mac os are available in [releases](https://notabug.org/GreatC0der/schellings_model/releases).*

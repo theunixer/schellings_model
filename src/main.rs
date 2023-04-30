@@ -32,6 +32,7 @@ fn main() {
     let mut speed: u64 = 500;
     let mut wanted_happiness: f32 = 0.50;
     let mut draw_to_screen: bool = true;
+    let mut dark_theme: bool = true;
 
     'running: loop {
         //checking events
@@ -87,6 +88,12 @@ fn main() {
                         wanted_happiness += 0.10;
                     }
                 }
+                Event::KeyDown {
+                    keycode: Some(Keycode::W),
+                    ..
+                } => {
+                    dark_theme = !dark_theme;
+                }
                 _ => {}
             }
         }
@@ -98,7 +105,11 @@ fn main() {
             continue;
         }
         //cleaning screen
-        canvas.set_draw_color(Color::RGB(255, 255, 255));
+        if dark_theme {
+            canvas.set_draw_color(Color::RGB(35, 35, 35));
+        } else {
+            canvas.set_draw_color(Color::RGB(250, 250, 250));
+        }
         canvas.clear();
 
         //drawing field
@@ -135,7 +146,11 @@ fn main() {
         canvas.set_draw_color(Color::RGB(255, 204, 0));
         canvas.draw_points(yellow_points.as_slice());
 
-        canvas.set_draw_color(Color::RGB(0, 0, 0));
+        if (dark_theme) {
+            canvas.set_draw_color(Color::RGB(255, 255, 255));
+        } else {
+            canvas.set_draw_color(Color::RGB(0, 0, 0));
+        }
 
         let toolbar_beggining = field.field.len() + 1;
         // drawing speed
