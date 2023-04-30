@@ -21,7 +21,7 @@
 *Prebuilt binaries for linux and mac os are available in [releases](https://notabug.org/GreatC0der/schellings_model/releases).*
 [You need to install rust first.](https://www.rust-lang.org/tools/install)
 ```
-git clone https:\//notabug.org/GreatC0der/schellings_model.git
+git clone https://notabug.org/GreatC0der/schellings_model.git
 cd schellings_model
 cargo run -r 
 ```
