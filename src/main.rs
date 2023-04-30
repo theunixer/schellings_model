@@ -87,43 +87,50 @@ fn main() {
             continue;
         }
         //cleaning screen
-        canvas.set_draw_color(Color::RGB(0, 0, 0));
+        canvas.set_draw_color(Color::RGB(255, 255, 255));
         canvas.clear();
+
         //drawing field
+        let mut green_points: Vec<Point> = Vec::new();
+        let mut yellow_points: Vec<Point> = Vec::new();
+
         for x in 0..field.field.len() {
             for y in 0..field.field[0].len() {
+                let point = Point::new(x as i32, y as i32);
                 match field.field[x][y] {
-                    None => {
-                        canvas.set_draw_color(Color::RGB(255, 255, 255));
-                    }
+                    None => {}
                     Some(Agent {
                         colour: Colour::Green,
                         ..
                     }) => {
-                        canvas.set_draw_color(Color::RGB(0, 153, 31));
+                        green_points.push(point);
                     }
                     Some(Agent {
                         colour: Colour::Yellow,
                         ..
                     }) => {
-                        canvas.set_draw_color(Color::RGB(255, 204, 0));
+                        yellow_points.push(point);
                     }
                     _ => {
                         panic!("error");
                     }
                 }
-                let point = Point::new(x as i32, y as i32);
-                canvas.draw_point(point);
             }
         }
 
+        canvas.set_draw_color(Color::RGB(0, 153, 31));
+        canvas.draw_points(green_points.as_slice());
+
+        canvas.set_draw_color(Color::RGB(255, 204, 0));
+        canvas.draw_points(yellow_points.as_slice());
+
+        canvas.set_draw_color(Color::RGB(0, 0, 0));
         // drawing speed
-        canvas.set_draw_color(Color::RGB(255, 255, 255));
         for i in 0..(1100 - speed) / 100 {
             canvas.draw_point(Point::new(i as i32 + 101, 1));
         }
+
         //drawing wanted_happiness
-        canvas.set_draw_color(Color::RGB(255, 255, 255));
         for i in 0..(wanted_happiness * 10 as f32 + 1.0) as i32 {
             canvas.draw_point(Point::new(i + 101, 4));
         }
