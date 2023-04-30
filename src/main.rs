@@ -8,6 +8,12 @@ use sdl2::rect::Point;
 use std::{thread::sleep, time::Duration};
 
 fn main() {
+    //define colours
+    let dark_gray: Color = Color::RGB(35, 35, 35);
+    let white: Color = Color::RGB(250, 250, 250);
+    let green : Color = Color::RGB(0, 153, 31);
+    let yellow : Color = Color::RGB(255, 204, 0);
+    let black: Color = Color::RGB(0, 0, 0);
     //sdl initialisation
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
@@ -106,9 +112,9 @@ fn main() {
         }
         //cleaning screen
         if dark_theme {
-            canvas.set_draw_color(Color::RGB(35, 35, 35));
+            canvas.set_draw_color(dark_gray);
         } else {
-            canvas.set_draw_color(Color::RGB(250, 250, 250));
+            canvas.set_draw_color(white);
         }
         canvas.clear();
 
@@ -140,16 +146,16 @@ fn main() {
             }
         }
 
-        canvas.set_draw_color(Color::RGB(0, 153, 31));
+        canvas.set_draw_color(green);
         canvas.draw_points(green_points.as_slice());
 
-        canvas.set_draw_color(Color::RGB(255, 204, 0));
+        canvas.set_draw_color(yellow);
         canvas.draw_points(yellow_points.as_slice());
 
         if (dark_theme) {
-            canvas.set_draw_color(Color::RGB(255, 255, 255));
+            canvas.set_draw_color(white);
         } else {
-            canvas.set_draw_color(Color::RGB(0, 0, 0));
+            canvas.set_draw_color(black);
         }
 
         let toolbar_beggining = field.field.len() + 1;
