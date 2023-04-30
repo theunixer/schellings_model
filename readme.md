@@ -22,7 +22,7 @@
 *Fix critical issues first, please.*
 
 
-- [x] Field: implement function that calculates level of happiness for all Aaents.
+- [x] Field: implement function that calculates level of happiness for all agents.
 - [x] Implement movement of agents.
 - [x] Implement graphics using SDL2.
 - [ ] Optimise program.
