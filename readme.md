@@ -22,7 +22,7 @@
 
 
 [You need to install rust first.](https://www.rust-lang.org/tools/install)
-```
+```sh
 git clone https://notabug.org/GreatC0der/schellings_model.git
 cd schellings_model
 cargo run -r 
