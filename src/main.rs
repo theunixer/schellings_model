@@ -47,8 +47,10 @@ fn main() {
     let mut wanted_happiness: f32 = 0.50;
     let mut draw_to_screen: bool = true;
     let mut dark_theme: bool = true;
+    let mut ui_changed: (bool, &str) = (false, "");
 
     'running: loop {
+        ui_changed = (false, "");
         //checking events
         for event in event_pump.poll_iter() {
             match event {
@@ -70,6 +72,7 @@ fn main() {
                 } => {
                     if speed < 1000 {
                         speed = speed + 100;
+                        ui_changed = (true, "Slowed down the simulation.");
                     }
                 }
                 Event::KeyDown {
@@ -78,6 +81,7 @@ fn main() {
                 } => {
                     if speed > 0 {
                         speed -= 100;
+                        ui_changed = (true, "Speeded down the simulation.");
                     }
                 }
                 Event::KeyDown {
@@ -85,6 +89,9 @@ fn main() {
                     ..
                 } => {
                     draw_to_screen = !draw_to_screen;
+                    if !draw_to_screen {
+                        ui_changed = (true, "Rendering paused.");
+                    }
                 }
                 Event::KeyDown {
                     keycode: Some(Keycode::Z),
@@ -92,6 +99,7 @@ fn main() {
                 } => {
                     if wanted_happiness > 0.10 {
                         wanted_happiness -= 0.10;
+                        ui_changed = (true, "Now agents want less neighbours alike them.");
                     }
                 }
                 Event::KeyDown {
@@ -100,6 +108,7 @@ fn main() {
                 } => {
                     if wanted_happiness < 1.0 {
                         wanted_happiness += 0.10;
+                        ui_changed = (true, "Now agents want more neighbours alike them.");
                     }
                 }
                 Event::KeyDown {
@@ -107,6 +116,8 @@ fn main() {
                     ..
                 } => {
                     dark_theme = !dark_theme;
+                    ui_changed = (true, "Theme changed.");
+
                     if dark_theme {
                         background_colour = dark_gray;
                         ui_colour = white;
@@ -129,19 +140,37 @@ fn main() {
         if !draw_to_screen {
             continue;
         }
-        //cleaning screen
-        canvas.set_draw_color(background_colour);
-        canvas.clear();
+
+        if ui_changed.0 {
+            //cleaning screen
+            canvas.set_draw_color(background_colour);
+            canvas.clear();
+
+            canvas.set_draw_color(ui_colour);
+            let toolbar_beggining = field.field.len() + 1;
+            // drawing speed
+            for i in 0..(1100 - speed) / 100 {
+                canvas.draw_point(Point::new(i as i32 + toolbar_beggining as i32, 1));
+            }
+
+            //drawing wanted_happiness
+            for i in 0..(wanted_happiness * 10 as f32 + 1.0) as i32 {
+                canvas.draw_point(Point::new(i + toolbar_beggining as i32, 4));
+            }
+        }
 
         //drawing field
         let mut points1: Vec<Point> = Vec::new();
         let mut points2: Vec<Point> = Vec::new();
+        let mut empty_points: Vec<Point> = Vec::new();
 
         for x in 0..field.field.len() {
             for y in 0..field.field[0].len() {
                 let point = Point::new(x as i32, y as i32);
                 match field.field[x][y] {
-                    None => {}
+                    None => {
+                        empty_points.push(point);
+                    }
                     Some(Agent {
                         colour: Group::One, ..
                     }) => {
@@ -165,18 +194,8 @@ fn main() {
         canvas.set_draw_color(group2_colour);
         canvas.draw_points(points2.as_slice());
 
-        canvas.set_draw_color(ui_colour);
-
-        let toolbar_beggining = field.field.len() + 1;
-        // drawing speed
-        for i in 0..(1100 - speed) / 100 {
-            canvas.draw_point(Point::new(i as i32 + toolbar_beggining as i32, 1));
-        }
-
-        //drawing wanted_happiness
-        for i in 0..(wanted_happiness * 10 as f32 + 1.0) as i32 {
-            canvas.draw_point(Point::new(i + toolbar_beggining as i32, 4));
-        }
+        canvas.set_draw_color(background_colour);
+        canvas.draw_points(empty_points.as_slice());
 
         canvas.present();
 
