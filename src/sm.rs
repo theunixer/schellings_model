@@ -3,14 +3,14 @@ pub mod sm {
     use rand::thread_rng;
     use std::mem::transmute;
     #[derive(PartialEq, Clone, Copy)]
-    pub enum Colour {
-        Yellow,
-        Green,
+    pub enum Group {
+        One,
+        Two,
     }
 
     #[derive(PartialEq, Clone, Copy)]
     pub struct Agent {
-        pub colour: Colour,
+        pub colour: Group,
         pub happiness: f32,
     }
 
@@ -80,9 +80,9 @@ pub mod sm {
                         if field.field[x_index][y_index] == None {
                             continue;
                         }
-                        if field.field[x_index][y_index].unwrap().colour == Colour::Yellow {
+                        if field.field[x_index][y_index].unwrap().colour == Group::One {
                             yellow += 1;
-                        } else if field.field[x_index][y_index].unwrap().colour == Colour::Green {
+                        } else if field.field[x_index][y_index].unwrap().colour == Group::Two {
                             green += 1;
                         }
                     }
@@ -90,14 +90,14 @@ pub mod sm {
 
                 if field.field[x][y] == None {
                     None
-                } else if field.field[x][y].unwrap().colour == Colour::Yellow {
+                } else if field.field[x][y].unwrap().colour == Group::One {
                     Some(Agent {
-                        colour: Colour::Yellow,
+                        colour: Group::One,
                         happiness: yellow as f32 / (yellow + green) as f32,
                     })
-                } else if field.field[x][y].unwrap().colour == Colour::Green {
+                } else if field.field[x][y].unwrap().colour == Group::Two {
                     Some(Agent {
-                        colour: Colour::Green,
+                        colour: Group::Two,
                         happiness: green as f32 / (yellow + green) as f32,
                     })
                 } else {

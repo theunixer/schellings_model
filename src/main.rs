@@ -1,5 +1,5 @@
 mod sm;
-use crate::sm::sm::{Agent, Colour, Field};
+use crate::sm::sm::{Agent, Field, Group};
 use sdl2::event::Event;
 use sdl2::event::WindowEvent;
 use sdl2::keyboard::Keycode;
@@ -11,13 +11,14 @@ fn main() {
     //define colours
     let dark_gray: Color = Color::RGB(35, 35, 35);
     let white: Color = Color::RGB(250, 250, 250);
-    let green : Color = Color::RGB(0, 153, 31);
-    let yellow : Color = Color::RGB(255, 204, 0);
+    let green: Color = Color::RGB(0, 153, 31);
+    let yellow: Color = Color::RGB(255, 204, 0);
     let black: Color = Color::RGB(0, 0, 0);
     //define colours of elements
     let mut background_colour = dark_gray;
     let mut ui_colour = white;
-
+    let mut group1_colour = green;
+    let mut group2_colour = yellow;
 
     //sdl initialisation
     let sdl_context = sdl2::init().unwrap();
@@ -104,11 +105,10 @@ fn main() {
                     ..
                 } => {
                     dark_theme = !dark_theme;
-                    if(dark_theme)
-                    {
+                    if dark_theme {
                         background_colour = dark_gray;
                         ui_colour = white;
-                    }else{
+                    } else {
                         background_colour = white;
                         ui_colour = black;
                     }
@@ -128,8 +128,8 @@ fn main() {
         canvas.clear();
 
         //drawing field
-        let mut green_points: Vec<Point> = Vec::new();
-        let mut yellow_points: Vec<Point> = Vec::new();
+        let mut points1: Vec<Point> = Vec::new();
+        let mut points2: Vec<Point> = Vec::new();
 
         for x in 0..field.field.len() {
             for y in 0..field.field[0].len() {
@@ -137,16 +137,14 @@ fn main() {
                 match field.field[x][y] {
                     None => {}
                     Some(Agent {
-                        colour: Colour::Green,
-                        ..
+                        colour: Group::One, ..
                     }) => {
-                        green_points.push(point);
+                        points1.push(point);
                     }
                     Some(Agent {
-                        colour: Colour::Yellow,
-                        ..
+                        colour: Group::Two, ..
                     }) => {
-                        yellow_points.push(point);
+                        points2.push(point);
                     }
                     _ => {
                         panic!("error");
@@ -155,11 +153,11 @@ fn main() {
             }
         }
 
-        canvas.set_draw_color(green);
-        canvas.draw_points(green_points.as_slice());
+        canvas.set_draw_color(group1_colour);
+        canvas.draw_points(points1.as_slice());
 
-        canvas.set_draw_color(yellow);
-        canvas.draw_points(yellow_points.as_slice());
+        canvas.set_draw_color(group2_colour);
+        canvas.draw_points(points2.as_slice());
 
         canvas.set_draw_color(ui_colour);
 
