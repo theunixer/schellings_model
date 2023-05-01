@@ -16,4 +16,5 @@
 - W - Изменить тему( Светлая / Темная ).
 
 ### Скриншоты
-![image](https://notabug.org/GreatC0der/schellings_model/raw/master/screenshots/program.png)
+![image](https://notabug.org/GreatC0der/schellings_model/raw/master/screenshots/dark.png)
+![image](https://notabug.org/GreatC0der/schellings_model/raw/master/screenshots/light.png)

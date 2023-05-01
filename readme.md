@@ -30,4 +30,5 @@ cargo run -r
 ```
 Open issue if you have any problems!
 ### Screenshots
-![image](https://notabug.org/GreatC0der/schellings_model/raw/master/screenshots/program.png)
+![image](https://notabug.org/GreatC0der/schellings_model/raw/master/screenshots/dark.png)
+![image](https://notabug.org/GreatC0der/schellings_model/raw/master/screenshots/light.png)
