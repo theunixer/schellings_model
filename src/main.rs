@@ -13,12 +13,14 @@ fn main() {
     let white: Color = Color::RGB(250, 250, 250);
     let green: Color = Color::RGB(0, 153, 31);
     let yellow: Color = Color::RGB(255, 204, 0);
+    let red: Color = Color::RGB(226, 61, 61);
+    let blue: Color = Color::RGB(49, 76, 146);
     let black: Color = Color::RGB(0, 0, 0);
     //define colours of elements
     let mut background_colour = dark_gray;
     let mut ui_colour = white;
-    let mut group1_colour = green;
-    let mut group2_colour = yellow;
+    let mut group1_colour = red;
+    let mut group2_colour = blue;
 
     //sdl initialisation
     let sdl_context = sdl2::init().unwrap();
@@ -108,9 +110,13 @@ fn main() {
                     if dark_theme {
                         background_colour = dark_gray;
                         ui_colour = white;
+                        group1_colour = red;
+                        group2_colour = blue;
                     } else {
                         background_colour = white;
                         ui_colour = black;
+                        group1_colour = green;
+                        group2_colour = yellow;
                     }
                 }
                 _ => {}
