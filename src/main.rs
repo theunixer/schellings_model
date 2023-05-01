@@ -5,6 +5,9 @@ use sdl2::event::WindowEvent;
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
 use sdl2::rect::Point;
+use sdl2::rect::Rect;
+use sdl2::render::TextureQuery;
+use sdl2::rwops::RWops;
 use std::{thread::sleep, time::Duration};
 
 fn main() {
@@ -23,7 +26,10 @@ fn main() {
     let mut group2_colour = blue;
 
     //sdl initialisation
+    let scale: f32 = 8.0;
+
     let sdl_context = sdl2::init().unwrap();
+    let ttf_context = sdl2::ttf::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
 
     let window = video_subsystem
@@ -34,12 +40,19 @@ fn main() {
         .unwrap();
 
     let mut canvas = window.into_canvas().build().unwrap();
+    canvas.set_scale(scale, scale);
     let mut event_pump = sdl_context.event_pump().unwrap();
-    canvas.set_scale(8.0, 8.0);
 
+    let texture_creator = canvas.texture_creator();
+    let rwops = include_bytes!("NimbusSanL-Regu.ttf");
+    let mut font = ttf_context
+        .load_font_from_rwops(RWops::from_bytes(rwops).unwrap(), 13)
+        .unwrap();
+
+    let toolbar_size = 24;
     let mut field = Field::new(
-        (canvas.window().size().0 / 8) as usize - 13,
-        canvas.window().size().1 as usize / 8,
+        (canvas.window().size().0 / scale as u32) as usize - toolbar_size,
+        canvas.window().size().1 as usize / scale as usize,
     );
     field.fill(4);
 
@@ -47,7 +60,7 @@ fn main() {
     let mut wanted_happiness: f32 = 0.50;
     let mut draw_to_screen: bool = true;
     let mut dark_theme: bool = true;
-    let mut ui_changed: (bool, &str) = (true, "");
+    let mut ui_changed: (bool, &str) = (true, "Program started.");
 
     'running: loop {
         //checking events
@@ -62,8 +75,13 @@ fn main() {
                     win_event: WindowEvent::Resized(x, y),
                     ..
                 } => {
-                    field = Field::new((x / 8) as usize - 13, y as usize / 8);
+                    field = Field::new(
+                        (x / scale as i32) as usize - toolbar_size,
+                        y as usize / scale as usize,
+                    );
                     field.fill(4);
+
+                    ui_changed = (true, "Window resized.");
                 }
                 Event::KeyDown {
                     keycode: Some(Keycode::A),
@@ -89,7 +107,7 @@ fn main() {
                 } => {
                     draw_to_screen = !draw_to_screen;
                     if !draw_to_screen {
-                        ui_changed = (true, "Rendering paused.");
+                        ui_changed = (true, "Rendering enabled.");
                     }
                 }
                 Event::KeyDown {
@@ -98,7 +116,7 @@ fn main() {
                 } => {
                     if wanted_happiness > 0.10 {
                         wanted_happiness -= 0.10;
-                        ui_changed = (true, "Now agents want less neighbours alike them.");
+                        ui_changed = (true, "Require more alike neighbours.");
                     }
                 }
                 Event::KeyDown {
@@ -107,7 +125,7 @@ fn main() {
                 } => {
                     if wanted_happiness < 1.0 {
                         wanted_happiness += 0.10;
-                        ui_changed = (true, "Now agents want more neighbours alike them.");
+                        ui_changed = (true, "Require less alike neighbours.");
                     }
                 }
                 Event::KeyDown {
@@ -151,11 +169,26 @@ fn main() {
             for i in 0..(1100 - speed) / 100 {
                 canvas.draw_point(Point::new(i as i32 + toolbar_beggining as i32, 1));
             }
-
             //drawing wanted_happiness
             for i in 0..(wanted_happiness * 10 as f32 + 1.0) as i32 {
                 canvas.draw_point(Point::new(i + toolbar_beggining as i32, 4));
             }
+            //Last event's description
+            canvas.set_scale(1.0, 1.0);
+            let surface = font.render(ui_changed.1).blended(ui_colour).unwrap();
+            let texture = texture_creator
+                .create_texture_from_surface(&surface)
+                .unwrap();
+
+            let TextureQuery { width, height, .. } = texture.query();
+            let text_rect = Rect::new(
+                (toolbar_beggining * scale as usize) as i32,
+                6 * scale as i32,
+                width,
+                height,
+            );
+            canvas.copy(&texture, None, text_rect);
+            canvas.set_scale(scale, scale);
         }
 
         //drawing field
@@ -202,6 +235,6 @@ fn main() {
         sleep(Duration::from_millis(1));
         sleep(Duration::from_millis(speed));
 
-        ui_changed = (true, "");
+        ui_changed = (false, "");
     }
 }
