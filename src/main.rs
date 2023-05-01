@@ -38,7 +38,7 @@ fn main() {
     canvas.set_scale(8.0, 8.0);
 
     let mut field = Field::new(
-        (canvas.window().size().0 / 8) as usize - 12,
+        (canvas.window().size().0 / 8) as usize - 13,
         canvas.window().size().1 as usize / 8,
     );
     field.fill(4);
@@ -47,10 +47,9 @@ fn main() {
     let mut wanted_happiness: f32 = 0.50;
     let mut draw_to_screen: bool = true;
     let mut dark_theme: bool = true;
-    let mut ui_changed: (bool, &str) = (false, "");
+    let mut ui_changed: (bool, &str) = (true, "");
 
     'running: loop {
-        ui_changed = (false, "");
         //checking events
         for event in event_pump.poll_iter() {
             match event {
@@ -63,7 +62,7 @@ fn main() {
                     win_event: WindowEvent::Resized(x, y),
                     ..
                 } => {
-                    field = Field::new((x / 8) as usize - 12, y as usize / 8);
+                    field = Field::new((x / 8) as usize - 13, y as usize / 8);
                     field.fill(4);
                 }
                 Event::KeyDown {
@@ -202,5 +201,7 @@ fn main() {
         //sleeping
         sleep(Duration::from_millis(1));
         sleep(Duration::from_millis(speed));
+
+        ui_changed = (true, "");
     }
 }
