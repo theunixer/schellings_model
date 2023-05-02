@@ -116,7 +116,7 @@ fn main() {
                 } => {
                     if wanted_happiness > 0.10 {
                         wanted_happiness -= 0.10;
-                        ui_changed = (true, "Require more alike neighbours.");
+                        ui_changed = (true, "Require less alike neighbours.");
                     }
                 }
                 Event::KeyDown {
@@ -125,7 +125,7 @@ fn main() {
                 } => {
                     if wanted_happiness < 1.0 {
                         wanted_happiness += 0.10;
-                        ui_changed = (true, "Require less alike neighbours.");
+                        ui_changed = (true, "Require more alike neighbours.");
                     }
                 }
                 Event::KeyDown {
