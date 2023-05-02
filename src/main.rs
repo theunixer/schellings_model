@@ -60,7 +60,7 @@ fn main() {
     let mut wanted_happiness: f32 = 0.50;
     let mut draw_to_screen: bool = true;
     let mut dark_theme: bool = true;
-    let mut ui_changed: (bool, &str) = (true, "Program started.");
+    let mut ui_changed: (bool, &str) = (true, "Press Q for help.");
 
     'running: loop {
         //checking events
@@ -146,6 +146,20 @@ fn main() {
                         group1_colour = green;
                         group2_colour = yellow;
                     }
+                }
+                Event::KeyDown {
+                    keycode: Some(Keycode::Q),
+                    ..
+                } => {
+                    let locale = sys_locale::get_locale().unwrap();
+                    if locale == "ru" {
+                        open::that("https://notabug.org/GreatC0der/schellings_model/src/master/readmeRU.md");
+                    } else {
+                        open::that("https://notabug.org/GreatC0der/schellings_model#key-bindings");
+                    }
+                }
+                Event::KeyDown { .. } => {
+                    ui_changed = (true, "Press Q for help.");
                 }
                 _ => {}
             }

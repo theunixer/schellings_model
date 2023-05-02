@@ -14,6 +14,7 @@
 - Z - Уменьшить привередливость агентов.
 - X - Увеличить привередливость агентов.
 - W - Изменить тему( Светлая / Темная ).
+- Q - Открыть эту страницу.
 
 ### Скриншоты
 ![image](https://notabug.org/GreatC0der/schellings_model/raw/master/screenshots/dark.png)
