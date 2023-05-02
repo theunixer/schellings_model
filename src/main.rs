@@ -106,7 +106,7 @@ fn main() {
                     ..
                 } => {
                     draw_to_screen = !draw_to_screen;
-                    if !draw_to_screen {
+                    if draw_to_screen {
                         ui_changed = (true, "Rendering enabled.");
                     }
                 }
