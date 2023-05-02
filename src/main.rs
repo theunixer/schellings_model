@@ -98,7 +98,7 @@ fn main() {
                 } => {
                     if speed > 0 {
                         speed -= 100;
-                        ui_changed = (true, "Speeded down the simulation.");
+                        ui_changed = (true, "Speeded up the simulation.");
                     }
                 }
                 Event::KeyDown {
