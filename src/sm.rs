@@ -53,17 +53,6 @@ pub mod sm {
             }
         }
 
-        pub fn calculate_happiness(&mut self) {
-            let max_x = self.field.len();
-            let max_y = self.field[0].len();
-
-            for x in 0..max_x {
-                for y in 0..max_y {
-                    Self::get_and_set_happiness(self, x, y);
-                }
-            }
-        }
-
         fn get_and_set_happiness(field: &mut Field, x: usize, y: usize) {
             let max_x = field.field.len();
             let max_y = field.field[0].len();
@@ -128,6 +117,7 @@ pub mod sm {
                     rng.next_u32() as usize % max_x,
                     rng.next_u32() as usize % max_y,
                 );
+                Self::get_and_set_happiness(self, agent.0, agent.1);
                 if self.field[agent.0][agent.1] == None {
                     continue;
                 }

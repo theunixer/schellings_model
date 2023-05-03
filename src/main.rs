@@ -165,7 +165,6 @@ fn main() {
             }
         }
         //updating
-        field.calculate_happiness();
         field.move_agent(wanted_happiness);
 
         if !draw_to_screen {
