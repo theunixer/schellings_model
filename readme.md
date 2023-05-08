@@ -20,7 +20,7 @@
 - Q - Open this page.
 
 ### Build and run
-*Prebuilt binaries for linux and mac os are available in [releases](https://notabug.org/GreatC0der/schellings_model/releases).*
+*Prebuilt binaries for linux are available in [releases](https://notabug.org/GreatC0der/schellings_model/releases).*
 
 
 [You need to install rust first.](https://www.rust-lang.org/tools/install)
