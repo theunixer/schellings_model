@@ -22,13 +22,10 @@
 ### Building and installing
 *Prebuilt binaries for linux are available in [releases](https://notabug.org/GreatC0der/schellings_model/releases).*
 
-[You need to install git.](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 [You need to install rust.](https://www.rust-lang.org/tools/install)
 [You need to install SDL2.](https://wiki.libsdl.org/SDL2/Installation)
 ```sh
-git clone https://notabug.org/GreatC0der/schellings_model.git
-cd schellings_model
-cargo install
+cargo install schellings_model
 ```
 Open issue if you have any problems!
 ### Screenshots
