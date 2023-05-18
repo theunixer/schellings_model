@@ -4,12 +4,12 @@ authors = ["GreatC0der", "Other contributors"]
 version = "1.2.1"
 edition = "2021"
 description = "Schelling's model written in rust."
-readme = "https://notabug.org/GreatC0der/schellings_model/src/master/readme.md"
+readme = "readme.md"
 homepage = "https://notabug.org/GreatC0der/schellings_model"
 documentation = "https://notabug.org/GreatC0der/schellings_model#key-bindings"
 repository = "https://notabug.org/GreatC0der/schellings_model"
-license = "GPLv3"
-license-file = "https://notabug.org/GreatC0der/schellings_model/src/master/LICENSE.txt"
+license = "GPL-3.0-only"
+license-file = "LICENSE.txt"
 keywords = ["schellings", "model", "simulation"]
 categories = ["GUI", "simulation"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
