@@ -151,12 +151,7 @@ fn main() {
                     keycode: Some(Keycode::Q),
                     ..
                 } => {
-                    let locale = sys_locale::get_locale().unwrap();
-                    if locale == "ru" {
-                        open::that("https://notabug.org/GreatC0der/schellings_model/src/master/readmeRU.md");
-                    } else {
-                        open::that("https://notabug.org/GreatC0der/schellings_model#key-bindings");
-                    }
+                    open::that("https://notabug.org/GreatC0der/schellings_model#key-bindings");
                 }
                 Event::KeyDown { .. } => {
                     ui_changed = (true, "Press Q for help.");

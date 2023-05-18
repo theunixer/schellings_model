@@ -18,4 +18,3 @@ categories = ["GUI", "simulation"]
 open = "4.1.0"
 rand = "0.8.5"
 sdl2 = {version = "0.35.2", features = ["ttf"]}
-sys-locale = "0.3.0"
