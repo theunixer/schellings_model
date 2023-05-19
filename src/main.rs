@@ -40,12 +40,12 @@ fn main() {
         .unwrap();
 
     let mut canvas = window.into_canvas().build().unwrap();
-    canvas.set_scale(scale, scale);
+    let _ = canvas.set_scale(scale, scale);
     let mut event_pump = sdl_context.event_pump().unwrap();
 
     let texture_creator = canvas.texture_creator();
     let rwops = include_bytes!("NimbusSanL-Regu.ttf");
-    let mut font = ttf_context
+    let font = ttf_context
         .load_font_from_rwops(RWops::from_bytes(rwops).unwrap(), 13)
         .unwrap();
 
@@ -151,7 +151,8 @@ fn main() {
                     keycode: Some(Keycode::Q),
                     ..
                 } => {
-                    open::that("https://notabug.org/GreatC0der/schellings_model#key-bindings");
+                    let _ =
+                        open::that("https://notabug.org/GreatC0der/schellings_model#key-bindings");
                 }
                 Event::KeyDown { .. } => {
                     ui_changed = (true, "Press Q for help.");
@@ -175,14 +176,14 @@ fn main() {
             let toolbar_beggining = field.field.len() + 1;
             // drawing speed
             for i in 0..(1100 - speed) / 100 {
-                canvas.draw_point(Point::new(i as i32 + toolbar_beggining as i32, 1));
+                let _ = canvas.draw_point(Point::new(i as i32 + toolbar_beggining as i32, 1));
             }
             //drawing wanted_happiness
             for i in 0..(wanted_happiness * 10 as f32 + 1.0) as i32 {
-                canvas.draw_point(Point::new(i + toolbar_beggining as i32, 4));
+                let _ = canvas.draw_point(Point::new(i + toolbar_beggining as i32, 4));
             }
             //Last event's description
-            canvas.set_scale(1.0, 1.0);
+            let _ = canvas.set_scale(1.0, 1.0);
             let surface = font.render(ui_changed.1).blended(ui_colour).unwrap();
             let texture = texture_creator
                 .create_texture_from_surface(&surface)
@@ -195,8 +196,8 @@ fn main() {
                 width,
                 height,
             );
-            canvas.copy(&texture, None, text_rect);
-            canvas.set_scale(scale, scale);
+            let _ = canvas.copy(&texture, None, text_rect);
+            let _ = canvas.set_scale(scale, scale);
         }
 
         //drawing field
@@ -221,21 +222,18 @@ fn main() {
                     }) => {
                         points2.push(point);
                     }
-                    _ => {
-                        panic!("error");
-                    }
                 }
             }
         }
 
         canvas.set_draw_color(group1_colour);
-        canvas.draw_points(points1.as_slice());
+        let _ = canvas.draw_points(points1.as_slice());
 
         canvas.set_draw_color(group2_colour);
-        canvas.draw_points(points2.as_slice());
+        let _ = canvas.draw_points(points2.as_slice());
 
         canvas.set_draw_color(background_colour);
-        canvas.draw_points(empty_points.as_slice());
+        let _ = canvas.draw_points(empty_points.as_slice());
 
         canvas.present();
 
