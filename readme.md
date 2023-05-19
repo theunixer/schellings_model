@@ -19,6 +19,7 @@
 - Z - Decrease number of neighbours alike for agent to be satisfied.
 - X - Increase number of neighbours alike for agent to be satisfied.
 - W - Switch theme( light / dark ).
+- T - Hide toolbar.
 - Q - Open this page.
 
 ### Building and installing
