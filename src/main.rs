@@ -152,7 +152,7 @@ fn main() {
                     ..
                 } => {
                     let _ =
-                        open::that("https://notabug.org/GreatC0der/schellings_model#key-bindings");
+                        open::that("https://notabug.org/GreatC0der/schellings_model/src/master/readme.md#key-bindings");
                 }
                 Event::KeyDown { .. } => {
                     ui_changed = (true, "Press Q for help.");
