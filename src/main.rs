@@ -1,5 +1,5 @@
-mod sm;
-use crate::sm::sm::{Agent, Field, Group};
+mod logic;
+use crate::logic::sm::{Agent, Field, Group};
 use sdl2::event::Event;
 use sdl2::event::WindowEvent;
 use sdl2::keyboard::Keycode;
@@ -97,7 +97,7 @@ fn main() {
                     ..
                 } => {
                     if speed < 1000 {
-                        speed = speed + 100;
+                        speed += 100;
                         ui_changed = (true, "Slowed down the simulation.");
                     }
                 }
@@ -205,7 +205,7 @@ fn main() {
                 let _ = canvas.draw_point(Point::new(i as i32 + toolbar_beggining as i32, 1));
             }
             //drawing wanted_happiness
-            for i in 0..(wanted_happiness * 10 as f32 + 1.0) as i32 {
+            for i in 0..(wanted_happiness * 10.0 + 1.0) as i32 {
                 let _ = canvas.draw_point(Point::new(i + toolbar_beggining as i32, 4));
             }
             //Last event's description

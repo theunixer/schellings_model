@@ -66,7 +66,7 @@ pub mod sm {
                         let x_index = ((x as i32 + xx) as usize) % max_x;
                         let y_index = ((y as i32 + yy) as usize) % max_y;
 
-                        if field.field[x_index][y_index] == None {
+                        if field.field[x_index][y_index].is_none() {
                             continue;
                         }
                         if field.field[x_index][y_index].unwrap().colour == Group::One {
@@ -77,7 +77,7 @@ pub mod sm {
                     }
                 }
 
-                if field.field[x][y] == None {
+                if field.field[x][y].is_none() {
                     None
                 } else if field.field[x][y].unwrap().colour == Group::One {
                     Some(Agent {
@@ -118,7 +118,7 @@ pub mod sm {
                     rng.next_u32() as usize % max_y,
                 );
                 Self::get_and_set_happiness(self, agent.0, agent.1);
-                if self.field[agent.0][agent.1] == None {
+                if self.field[agent.0][agent.1].is_none() {
                     continue;
                 }
                 if self.field[agent.0][agent.1].unwrap().happiness > wanted_happiness {
@@ -139,13 +139,13 @@ pub mod sm {
                     rng.next_u32() as usize % max_x,
                     rng.next_u32() as usize % max_y,
                 );
-                if self.field[empty.0][empty.1] != None {
+                if self.field[empty.0][empty.1].is_some() {
                     continue;
                 }
                 break;
             }
 
-            self.field[empty.0][empty.1] = self.field[agent.0][agent.1].clone();
+            self.field[empty.0][empty.1] = self.field[agent.0][agent.1];
             self.field[agent.0][agent.1] = None;
         }
     }
