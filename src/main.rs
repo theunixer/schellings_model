@@ -49,10 +49,15 @@ fn main() {
         .load_font_from_rwops(RWops::from_bytes(rwops).unwrap(), 13)
         .unwrap();
 
-    let toolbar_size = 24;
+    let opened_toolbar_size = 24;
+    let mut toolbar_size = opened_toolbar_size;
+
+    let mut width = canvas.window().size().0;
+    let mut height = canvas.window().size().1;
+
     let mut field = Field::new(
-        (canvas.window().size().0 / scale as u32) as usize - toolbar_size,
-        canvas.window().size().1 as usize / scale as usize,
+        (width / scale as u32) as usize - toolbar_size,
+        height as usize / scale as usize,
     );
     field.fill(4);
 
@@ -61,6 +66,7 @@ fn main() {
     let mut draw_to_screen: bool = true;
     let mut dark_theme: bool = true;
     let mut ui_changed: (bool, &str) = (true, "Press Q for help.");
+    let mut toolbar_visible: bool = true;
 
     'running: loop {
         //checking events
@@ -75,9 +81,12 @@ fn main() {
                     win_event: WindowEvent::Resized(x, y),
                     ..
                 } => {
+                    width = x as u32;
+                    height = y as u32;
+
                     field = Field::new(
-                        (x / scale as i32) as usize - toolbar_size,
-                        y as usize / scale as usize,
+                        (width / scale as u32) as usize - toolbar_size,
+                        height as usize / scale as usize,
                     );
                     field.fill(4);
 
@@ -146,6 +155,23 @@ fn main() {
                         group1_colour = green;
                         group2_colour = yellow;
                     }
+                }
+                Event::KeyDown {
+                    keycode: Some(Keycode::T),
+                    ..
+                } => {
+                    toolbar_visible = !toolbar_visible;
+                    if toolbar_visible {
+                        toolbar_size = opened_toolbar_size;
+                        ui_changed = (true, "Toolbar opened.");
+                    } else {
+                        toolbar_size = 0;
+                    }
+                    field = Field::new(
+                        (width / scale as u32) as usize - toolbar_size,
+                        height as usize / scale as usize,
+                    );
+                    field.fill(4);
                 }
                 Event::KeyDown {
                     keycode: Some(Keycode::Q),
