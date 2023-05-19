@@ -1,4 +1,6 @@
 ## Schelling's model written in rust.
+[![Creates.io](https://shields.io/crates/d/schellings_model.svg)](https://crates.io/crates/schellings_model)
+[![Creates.io](https://shields.io/crates/v/schellings_model.svg)](https://crates.io/crates/schellings_model)
 
 ### [RU](https://notabug.org/GreatC0der/schellings_model/src/master/readmeRU.md)
 
