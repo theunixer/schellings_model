@@ -17,3 +17,7 @@ categories = ["GUI", "simulation"]
 open = "4.1.0"
 rand = "0.8.5"
 sdl2 = {version = "0.35.2", features = ["ttf"]}
+
+[package.metadata.vcpkg]
+dependencies = ["sdl2", "sdl2-ttf"]
+git = "https://github.com/microsoft/vcpkg"
