@@ -5,9 +5,9 @@ version = "1.3.2"
 edition = "2021"
 description = "Schelling's model written in rust."
 readme = "readme.md"
-homepage = "https://notabug.org/GreatC0der/schellings_model"
-documentation = "https://notabug.org/GreatC0der/schellings_model#key-bindings"
-repository = "https://notabug.org/GreatC0der/schellings_model"
+homepage = "https://github.com/GreatC0der/schellings_model/blob/master/readme.md"
+documentation = "https://github.com/GreatC0der/schellings_model/blob/master/readme.md#key-bindings"
+repository = "https://github.com/GreatC0der/schellings_model"
 license = "GPL-3.0-only"
 keywords = ["schellings", "model", "simulation"]
 categories = ["GUI", "simulation"]
@@ -17,7 +17,3 @@ categories = ["GUI", "simulation"]
 open = "4.1.0"
 rand = "0.8.5"
 sdl2 = {version = "0.35.2", features = ["ttf"]}
-
-[package.metadata.vcpkg]
-dependencies = ["sdl2", "sdl2-ttf"]
-git = "https://github.com/microsoft/vcpkg"
