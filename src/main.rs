@@ -8,6 +8,7 @@ use sdl2::rect::Point;
 use sdl2::rect::Rect;
 use sdl2::render::TextureQuery;
 use sdl2::rwops::RWops;
+use sdl2::url::open_url;
 use std::{thread::sleep, time::Duration};
 
 fn main() {
@@ -177,8 +178,7 @@ fn main() {
                     keycode: Some(Keycode::Q),
                     ..
                 } => {
-                    let _ =
-                        open::that("https://notabug.org/GreatC0der/schellings_model/src/master/readme.md#key-bindings");
+                    let _ = open_url("https://github.com/GreatC0der/schellings_model/blob/master/readme.md#key-bindings");
                 }
                 Event::KeyDown { .. } => {
                     ui_changed = (true, "Press Q for help.");
