@@ -1,6 +1,10 @@
+pub mod simulation;
 use rand::prelude::RngCore;
 use rand::thread_rng;
 use std::mem::transmute;
+
+const LIMIT: usize = 20;
+
 #[derive(PartialEq, Clone, Copy)]
 pub enum Agent {
     One,
@@ -88,8 +92,15 @@ impl Field {
 
         let mut rng = thread_rng();
 
+        let mut counter = 0;
         // Looking for suitable agent to move
         let agent = loop {
+            if counter > LIMIT {
+                return;
+            }
+
+            counter += 1;
+
             let agent = (
                 rng.next_u32() as usize % max_x,
                 rng.next_u32() as usize % max_y,

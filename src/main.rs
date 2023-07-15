@@ -1,5 +1,5 @@
+use schellings_model::simulation::Simulation;
 use schellings_model::{Agent, Field};
-
 use sdl2::event::Event;
 use sdl2::event::WindowEvent;
 use sdl2::keyboard::Keycode;
@@ -9,6 +9,8 @@ use sdl2::rect::Rect;
 use sdl2::render::TextureQuery;
 use sdl2::rwops::RWops;
 use sdl2::url::open_url;
+use std::sync::{Arc, Mutex};
+use std::thread;
 use std::{thread::sleep, time::Duration};
 
 fn main() {
@@ -41,7 +43,7 @@ fn main() {
         .unwrap();
 
     let mut canvas = window.into_canvas().build().unwrap();
-    let _ = canvas.set_scale(scale, scale);
+    canvas.set_scale(scale, scale).unwrap();
     let mut event_pump = sdl_context.event_pump().unwrap();
 
     let texture_creator = canvas.texture_creator();
@@ -56,17 +58,35 @@ fn main() {
     let mut width = canvas.window().size().0;
     let mut height = canvas.window().size().1;
 
+    // Creating and starting a simulation
     let mut field = Field::new(
         (width / scale as u32) as usize - toolbar_size,
         height as usize / scale as usize,
     );
     field.fill(4);
+    let simulation = Mutex::new(Simulation {
+        field,
+        speed: 500,
+        wanted_happiness: 0.50,
+        running: true,
+    });
+    let simulation_ref = Arc::new(simulation);
+    let simulation_ref1 = simulation_ref.clone();
+    let simulation_thread = thread::spawn(move || loop {
+        let mut simulation = simulation_ref1.lock().unwrap();
+        if !simulation.running {
+            break;
+        }
+        let wanted_happiness = simulation.wanted_happiness;
+        simulation.field.move_agent(wanted_happiness);
+        let speed = simulation.speed;
+        drop(simulation);
+        sleep(Duration::from_millis(speed));
+    });
 
-    let mut speed: u64 = 500;
-    let mut wanted_happiness: f32 = 0.50;
     let mut draw_to_screen: bool = true;
     let mut dark_theme: bool = true;
-    let mut ui_changed: (bool, &str) = (true, "Press Q for help.");
+    let mut ui_changed: &str = "Press Q for help.";
     let mut toolbar_visible: bool = true;
 
     'running: loop {
@@ -77,7 +97,11 @@ fn main() {
                 | Event::KeyDown {
                     keycode: Some(Keycode::Escape),
                     ..
-                } => break 'running,
+                } => {
+                    simulation_ref.lock().unwrap().running = false;
+                    simulation_thread.join().unwrap();
+                    break 'running;
+                }
                 Event::Window {
                     win_event: WindowEvent::Resized(x, y),
                     ..
@@ -91,24 +115,26 @@ fn main() {
                     );
                     field.fill(4);
 
-                    ui_changed = (true, "Window resized.");
+                    ui_changed = "Window resized.";
                 }
                 Event::KeyDown {
                     keycode: Some(Keycode::A),
                     ..
                 } => {
-                    if speed < 1000 {
-                        speed += 100;
-                        ui_changed = (true, "Slowed down the simulation.");
+                    let speed = &mut simulation_ref.lock().unwrap().speed;
+                    if *speed < 1000 {
+                        *speed += 100;
+                        ui_changed = "Slowed down the simulation.";
                     }
                 }
                 Event::KeyDown {
                     keycode: Some(Keycode::S),
                     ..
                 } => {
-                    if speed > 0 {
-                        speed -= 100;
-                        ui_changed = (true, "Speeded up the simulation.");
+                    let speed = &mut simulation_ref.lock().unwrap().speed;
+                    if *speed > 0 {
+                        *speed -= 100;
+                        ui_changed = "Speeded up the simulation.";
                     }
                 }
                 Event::KeyDown {
@@ -117,25 +143,27 @@ fn main() {
                 } => {
                     draw_to_screen = !draw_to_screen;
                     if draw_to_screen {
-                        ui_changed = (true, "Rendering enabled.");
+                        ui_changed = "Rendering enabled.";
                     }
                 }
                 Event::KeyDown {
                     keycode: Some(Keycode::Z),
                     ..
                 } => {
-                    if wanted_happiness > 0.10 {
-                        wanted_happiness -= 0.10;
-                        ui_changed = (true, "Require less alike neighbours.");
+                    let wanted_happiness = &mut simulation_ref.lock().unwrap().wanted_happiness;
+                    if *wanted_happiness > 0.10 {
+                        *wanted_happiness -= 0.10;
+                        ui_changed = "Require less alike neighbours.";
                     }
                 }
                 Event::KeyDown {
                     keycode: Some(Keycode::X),
                     ..
                 } => {
-                    if wanted_happiness < 1.0 {
-                        wanted_happiness += 0.10;
-                        ui_changed = (true, "Require more alike neighbours.");
+                    let wanted_happiness = &mut simulation_ref.lock().unwrap().wanted_happiness;
+                    if *wanted_happiness < 1.0 {
+                        *wanted_happiness += 0.10;
+                        ui_changed = "Require more alike neighbours.";
                     }
                 }
                 Event::KeyDown {
@@ -143,7 +171,7 @@ fn main() {
                     ..
                 } => {
                     dark_theme = !dark_theme;
-                    ui_changed = (true, "Theme changed.");
+                    ui_changed = "Theme changed.";
 
                     if dark_theme {
                         background_colour = dark_gray;
@@ -164,7 +192,7 @@ fn main() {
                     toolbar_visible = !toolbar_visible;
                     if toolbar_visible {
                         toolbar_size = opened_toolbar_size;
-                        ui_changed = (true, "Toolbar opened.");
+                        ui_changed = "Toolbar opened.";
                     } else {
                         toolbar_size = 0;
                     }
@@ -180,61 +208,59 @@ fn main() {
                 } => {
                     let _ = open_url("https://github.com/GreatC0der/schellings_model/blob/master/readme.md#key-bindings");
                 }
-                Event::KeyDown { .. } => {
-                    ui_changed = (true, "Press Q for help.");
-                }
+                Event::KeyDown { .. } => ui_changed = "Press Q for help.",
                 _ => {}
             }
         }
-        //updating
-        field.move_agent(wanted_happiness);
 
         if !draw_to_screen {
             continue;
         }
 
-        if ui_changed.0 {
-            //cleaning screen
-            canvas.set_draw_color(background_colour);
-            canvas.clear();
+        let Ok(simulation) = simulation_ref.try_lock() else { continue };
 
-            canvas.set_draw_color(ui_colour);
-            let toolbar_beggining = field.field.len() + 1;
-            // drawing speed
-            for i in 0..(1100 - speed) / 100 {
-                let _ = canvas.draw_point(Point::new(i as i32 + toolbar_beggining as i32, 1));
-            }
-            //drawing wanted_happiness
-            for i in 0..(wanted_happiness * 10.0 + 1.0) as i32 {
-                let _ = canvas.draw_point(Point::new(i + toolbar_beggining as i32, 4));
-            }
-            //Last event's description
-            let _ = canvas.set_scale(1.0, 1.0);
-            let surface = font.render(ui_changed.1).blended(ui_colour).unwrap();
-            let texture = texture_creator
-                .create_texture_from_surface(&surface)
-                .unwrap();
+        canvas.clear();
+        //getting the data from the app
 
-            let TextureQuery { width, height, .. } = texture.query();
-            let text_rect = Rect::new(
-                (toolbar_beggining * scale as usize) as i32,
-                6 * scale as i32,
-                width,
-                height,
-            );
-            let _ = canvas.copy(&texture, None, text_rect);
-            let _ = canvas.set_scale(scale, scale);
+        //cleaning screen
+        canvas.set_draw_color(background_colour);
+
+        canvas.set_draw_color(ui_colour);
+        let toolbar_beggining = simulation.field.field.len() + 1;
+        // drawing speed
+        for i in 0..(1100 - simulation.speed) / 100 {
+            let _ = canvas.draw_point(Point::new(i as i32 + toolbar_beggining as i32, 1));
         }
+        //drawing wanted_happiness
+        for i in 0..(simulation.wanted_happiness * 10.0 + 1.0) as i32 {
+            let _ = canvas.draw_point(Point::new(i + toolbar_beggining as i32, 4));
+        }
+        //Last event's description
+        let _ = canvas.set_scale(1.0, 1.0);
+        let surface = font.render(ui_changed).blended(ui_colour).unwrap();
+        let texture = texture_creator
+            .create_texture_from_surface(&surface)
+            .unwrap();
+
+        let TextureQuery { width, height, .. } = texture.query();
+        let text_rect = Rect::new(
+            (toolbar_beggining * scale as usize) as i32,
+            6 * scale as i32,
+            width,
+            height,
+        );
+        let _ = canvas.copy(&texture, None, text_rect);
+        let _ = canvas.set_scale(scale, scale);
 
         //drawing field
         let mut points1: Vec<Point> = Vec::new();
         let mut points2: Vec<Point> = Vec::new();
         let mut empty_points: Vec<Point> = Vec::new();
 
-        for x in 0..field.field.len() {
-            for y in 0..field.field[0].len() {
+        for x in 0..simulation.field.field.len() {
+            for y in 0..simulation.field.field[0].len() {
                 let point = Point::new(x as i32, y as i32);
-                match field.field[x][y] {
+                match simulation.field.field[x][y] {
                     None => {
                         empty_points.push(point);
                     }
@@ -258,11 +284,5 @@ fn main() {
         let _ = canvas.draw_points(empty_points.as_slice());
 
         canvas.present();
-
-        //sleeping
-        sleep(Duration::from_millis(1));
-        sleep(Duration::from_millis(speed));
-
-        ui_changed = (false, "");
     }
 }
