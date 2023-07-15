@@ -1,5 +1,5 @@
-mod logic;
-use crate::logic::sm::{Agent, Field, Group};
+use schellings_model::{Agent, Field};
+
 use sdl2::event::Event;
 use sdl2::event::WindowEvent;
 use sdl2::keyboard::Keycode;
@@ -19,7 +19,7 @@ fn main() {
     let red: Color = Color::RGB(226, 61, 61);
     let blue: Color = Color::RGB(49, 76, 146);
     let black: Color = Color::RGB(0, 0, 0);
-    //define colours of elements
+    //define current colours of elements
     let mut background_colour = dark_gray;
     let mut ui_colour = white;
     let mut group1_colour = red;
@@ -238,14 +238,10 @@ fn main() {
                     None => {
                         empty_points.push(point);
                     }
-                    Some(Agent {
-                        colour: Group::One, ..
-                    }) => {
+                    Some(Agent::One) => {
                         points1.push(point);
                     }
-                    Some(Agent {
-                        colour: Group::Two, ..
-                    }) => {
+                    Some(Agent::Two) => {
                         points2.push(point);
                     }
                 }
