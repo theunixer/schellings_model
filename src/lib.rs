@@ -3,6 +3,9 @@ use rand::prelude::RngCore;
 use rand::thread_rng;
 use std::mem::transmute;
 
+#[cfg(test)]
+mod benchmarks;
+
 const LIMIT: usize = 20;
 
 #[derive(PartialEq, Clone, Copy)]
