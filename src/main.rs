@@ -109,12 +109,14 @@ fn main() {
                     width = x as u32;
                     height = y as u32;
 
-                    field = Field::new(
+                    let mut field = Field::new(
                         (width / scale as u32) as usize - toolbar_size,
                         height as usize / scale as usize,
                     );
                     field.fill(4);
 
+                    let field_ref = &mut simulation_ref.lock().unwrap().field;
+                    *field_ref = field;
                     ui_changed = "Window resized.";
                 }
                 Event::KeyDown {
@@ -196,11 +198,13 @@ fn main() {
                     } else {
                         toolbar_size = 0;
                     }
-                    field = Field::new(
+                    let mut field = Field::new(
                         (width / scale as u32) as usize - toolbar_size,
                         height as usize / scale as usize,
                     );
                     field.fill(4);
+                    let field_ref = &mut simulation_ref.lock().unwrap().field;
+                    *field_ref = field;
                 }
                 Event::KeyDown {
                     keycode: Some(Keycode::Q),
