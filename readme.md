@@ -23,7 +23,7 @@
 - Q - Open this page.
 
 ### Building and installing
-*Prebuilt binaries for linux are available in [releases](https://github.com/GreatC0der/schellings_model/releases).*
+*Prebuilt binaries for linux & mac os are available in [releases](https://github.com/GreatC0der/schellings_model/releases).*
 
 [You need to install rust.](https://www.rust-lang.org/tools/install)
 [You need to install SDL2.](https://wiki.libsdl.org/SDL2/Installation)
